@@ -1,19 +1,18 @@
 %option noyywrap
 
 %{
-    /* C stuffs */
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include <string.h>
-    #include "parser.tab.h" /* holds token definations */
-
+	#include "symtab.h"
+	#include "parser.tab.h"
 	extern FILE *yyin;
 	extern FILE *yyout;
 	
-	int lineno = 1; 
+	int lineno = 1; // initialize to 1
+	void ret_print(char *token_type);
 	void yyerror();
 %}
-/* regular expressions */
 
 alpha     [a-zA-Z]
 digit     [0-9]
@@ -22,62 +21,43 @@ print     [ -~]
 
 ID        {alpha}+{alnum}*
 ICONST    "0"|[0-9]{digit}*
-FCONST    "0"|{digit}*"."{digit}+
-CCONST    (\'{print}\')
-STRING    \"{print}*\"
 
-/* token detections */
 %%
 
-"//".*                { printf("Comment is at line %d\n", lineno); } 
-"char"|"CHAR"         { return CHAR; }
-"int"|"INT"           { return INT; }
-"float"|"FLOAT"       { return FLOAT; }
-"double"|"DOUBLE"     { return DOUBLE; }
-"if"|"IF"             { return IF; }
-"else"|"ELSE"         { return ELSE; }
-"while"|"WHILE"       { return WHILE; }
-"for"|"FOR"           { return FOR; }
-"continue"|"CONTINUE" { return CONTINUE; }
-"break"|"BREAK"       { return BREAK; }
-"void"|"VOID"         { return VOID; }
-"return"|"RETURN"     { return RETURN; }
+"//".*        { printf("Comment at line %d\n", lineno); } 
 
+"int"       { return INT; }
+"if"        { return IF; }
+"else"      { return ELSE; }
+"while"     { return WHILE; }
+"continue"  { return CONTINUE; }
+"break"     { return BREAK; }
 
-"+"|"-"             { return ADDOP; }
-"*"                 { return MULOP; }
-"/"                 { return DIVOP; }
-"++"|"--"           { return INCR; }
-"||"                { return OROP; }
-"&&"                { return ANDOP; }
-"!"                 { return NOTOP; }
-"=="|"!="           { return EQUOP; }
-">"|"<"|">="|"<="   { return RELOP; }
-
+"+"       { return ADDOP; }
+"-"       { return SUBOP; }
+"*"       { return MULOP; }
+"/"       { return DIVOP; }
+"=="      { return EQUOP; }
+">"       { return GT; }
+"<"       { return LT; }
 
 "("       { return LPAREN; }
 ")"       { return RPAREN; }
-"]"       { return RBRACK; }
-"["       { return LBRACK; }
 "{"       { return LBRACE; }
 "}"       { return RBRACE; }
 ";"       { return SEMI; }
-"."       { return DOT; }
-","       { return COMMA; }
 "="       { return ASSIGN; }
-"&"       { return REFER; }
+"print"   { return PRINT; }
 
-
-{ID}        { return ID;}
+{ID}    {
+		yylval.id = (list_t*)malloc(sizeof(list_t));
+        strcpy(yylval.id->st_name, yytext);
+        return ID;
+        }
 {ICONST}    { yylval.int_val   = atoi(yytext); return ICONST; }
-{FCONST}    { yylval.double_val = atof(yytext); return FCONST; }
-{CCONST}    { yylval.char_val  = yytext[0];    return CCONST; }
-{STRING}    { yylval.str_val = malloc(yyleng * sizeof(char));
-              strcpy(yylval.str_val, yytext);  return STRING; }
-
 
 "\n"        { lineno += 1; }
-[ \t\r\f]+ 
+[ \t\r\f]+  
 
 .       { yyerror("Unrecognized character"); }
 

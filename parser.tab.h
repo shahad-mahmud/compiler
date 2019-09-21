@@ -49,43 +49,28 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    CHAR = 258,
-    INT = 259,
-    FLOAT = 260,
-    DOUBLE = 261,
-    IF = 262,
-    ELSE = 263,
-    WHILE = 264,
-    FOR = 265,
-    CONTINUE = 266,
-    BREAK = 267,
-    VOID = 268,
-    RETURN = 269,
-    ADDOP = 270,
-    MULOP = 271,
-    DIVOP = 272,
-    INCR = 273,
-    OROP = 274,
-    ANDOP = 275,
-    NOTOP = 276,
-    EQUOP = 277,
-    RELOP = 278,
-    LPAREN = 279,
-    RPAREN = 280,
-    LBRACK = 281,
-    RBRACK = 282,
-    LBRACE = 283,
-    RBRACE = 284,
-    SEMI = 285,
-    DOT = 286,
-    COMMA = 287,
-    ASSIGN = 288,
-    REFER = 289,
-    ID = 290,
-    ICONST = 291,
-    FCONST = 292,
-    CCONST = 293,
-    STRING = 294
+    INT = 258,
+    IF = 259,
+    ELSE = 260,
+    WHILE = 261,
+    CONTINUE = 262,
+    BREAK = 263,
+    PRINT = 264,
+    ADDOP = 265,
+    SUBOP = 266,
+    MULOP = 267,
+    DIVOP = 268,
+    EQUOP = 269,
+    LT = 270,
+    GT = 271,
+    LPAREN = 272,
+    RPAREN = 273,
+    LBRACE = 274,
+    RBRACE = 275,
+    SEMI = 276,
+    ASSIGN = 277,
+    ID = 278,
+    ICONST = 279
   };
 #endif
 
@@ -94,14 +79,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 12 "parser.y" /* yacc.c:1921  */
+#line 16 "parser.y" /* yacc.c:1921  */
 
-    char char_val;
 	int int_val;
-	double double_val;
-	char* str_val;
+	list_t* id;
 
-#line 105 "parser.tab.h" /* yacc.c:1921  */
+#line 88 "parser.tab.h" /* yacc.c:1921  */
 };
 
 typedef union YYSTYPE YYSTYPE;
