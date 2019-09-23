@@ -1,0 +1,62 @@
+Comment at line 1
+Comment at line 2
+Comment at line 3
+inserting a in symtab and its address = 0
+a is declared successfully.
+
+inserting b in symtab and its address = 1
+b is declared successfully.
+
+a is already declared.
+inserting gg in symtab and its address = 2
+inserting dd in symtab and its address = 3
+dd is declared successfully.
+
+inserting c in symtab and its address = 4
+c is declared successfully.
+
+Comment at line 11
+Comment at line 12
+Parsing finished!
+
+
+================STACK MACHINE INSTRUCTIONS================
+  0: start              -1
+  1: store               0
+  2: store               1
+  3: ld_int_value        3
+  4: store               2
+  5: store               3
+  6: store               4
+  7: halt               -1
+
+
+================MIPS assembly================
+
+#start
+.text
+.globl main
+main:
+addiu $t7, $sp, 160
+
+#store
+sw $a0, 0($t7)
+
+#store
+sw $a0, 16($t7)
+
+#ld_int_value
+li $a0, 3
+
+#store
+sw $a0, 32($t7)
+
+#store
+sw $a0, 48($t7)
+
+#store
+sw $a0, 64($t7)
+
+#halt
+li $v0, 10
+syscall

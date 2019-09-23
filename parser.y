@@ -18,85 +18,98 @@
 	list_t* id;
 }
 
-%token<int_val> INT IF ELSE WHILE CONTINUE BREAK PRINT
-%token<int_val> ADDOP SUBOP MULOP DIVOP EQUOP LT GT
-%token<int_val> LPAREN RPAREN LBRACE RBRACE SEMI ASSIGN
+%token<int_val> CHAR INT FLOAT DOUBLE IF ELSE DO WHILE FOR CONTINUE BREAK VOID RETURN PRINT
+%token<int_val> ADDOP SUBOP MULOP DIVOP INCR OROP ANDOP NOTOP EQUOP NEQUOP LT GT GTE LTE
+%token<int_val> LPAREN RPAREN LBRACK RBRACK LBRACE RBRACE SEMI DOT COMMA ASSIGN REFER APOSTOPH
 %token <id> ID
 %token <int_val> ICONST
+%token <double_val>  FCONST
+%token <char_val> 	 CCONST
+%token <str_val>     STRING
 
-%left ADDOP SUBOP
+/*associavities*/
+%left LPAREN RPAREN LBRACK RBRACK
 %left MULOP DIVOP
-%left LT GT
-%left EQUOP
+%left ADDOP
+%left LT GT LTE GTE
+%left EQUOP NEQUOP
+%left OROP
+%left ANDOP
+%left COMMA
 %right ASSIGN
+%right NOTOP INCR REFER
+
+/*value type of non-terminals*/
+%type <int_val>  declaration
 
 %start program
 
 %%
-program: {gen_code(START, -1);} code {gen_code(HALT, -1);} ;
+program: {gen_code(START, -1);} statements {gen_code(HALT, -1);} ;
 
-code: declarations statements;
+statements: statements statement | ;
 
-declarations: |
-			  declarations declaration 
+statement:    declarations;
+
+
+declarations: 	  declarations declaration 
+			  	| ;
+
+declaration:    INT ID SEMI
+						{
+							list_t* el = search($2->st_name); 
+							if(el == NULL){
+								insert($2->st_name, strlen($2->st_name), INT_TYPE);
+								$2->address = address-1;
+								gen_code(STORE, address-1);
+								printf("%s is declared successfully.\n\n", $2->st_name);
+							}else{
+								printf("%s is already declared.\n", el->st_name);
+							}
+						}
+			  	| FLOAT ID SEMI
+						{
+							list_t* el = search($2->st_name); 
+							if(el == NULL){
+								insert($2->st_name, strlen($2->st_name), REAL_TYPE);
+								$2->address = address-1;
+								gen_code(STORE, address-1);
+								printf("%s is declared successfully.\n\n", $2->st_name);
+							}else{
+								printf("%s is already declared.\n", el->st_name);
+							}
+						} 
+			 	| CHAR ID SEMI
+						{
+							list_t* el = search($2->st_name); 
+							if(el == NULL){
+								insert($2->st_name, strlen($2->st_name), CHAR_TYPE);
+								$2->address = address-1;
+								gen_code(STORE, address-1);
+								printf("%s is declared successfully.\n\n", $2->st_name);
+							}else{
+								printf("%s is already declared.\n", el->st_name);
+							}
+						}
+			   	| INT ID ASSIGN ICONST SEMI
+			   			{
+							list_t* el = search($2 -> st_name);
+							if(el ==NULL){
+								insert($2->st_name, strlen($2->st_name), INT_TYPE);
+								gen_code(LD_INT_VALUE, $4);
+								$2->address = address-1;
+								gen_code(STORE, address-1);
+							}else{
+								printf("%s is already declared.\n", el->st_name);
+							}
+						} 
+				| INT ID ASSIGN FCONST SEMI
+			   			{
+							printf("ERROR!! Type missmatch.");
+						}
 			  ;
 
-declaration:  INT ID SEMI
-			  {
-				  insert($2->st_name, strlen($2->st_name), INT_TYPE);
-			  }
-			  | INT ID ASSIGN ICONST SEMI
-			  {
-				  insert($2->st_name, strlen($2->st_name), INT_TYPE);
-				  gen_code(LD_INT_VALUE, $4);
-				  list_t* id = search($2->st_name);
-				  gen_code(STORE, id->address);
-			  }
-			  ;
 
-statements: statements statement |  ;
-
-statement: assigment SEMI 
-		  | PRINT ID SEMI
-		  {
-			  int address = id_check($2->st_name);
-			  
-			  if(address!=-1)
-				  gen_code(WRITE_INT, address);
-			  else
-			  	exit(1);
-		  };
-
-assigment: ID ASSIGN exp 
-		   {
-			   int address = id_check($1->st_name);
-			  
-			  if(address!=-1)
-				  gen_code(STORE, address);
-			  else 
-			  	exit(1);
-		   }
-		   ;
-
-exp:  ID  
-	  {
-		  int address = id_check($1->st_name);
-			  
-			  if(address!=-1)
-				  gen_code(LD_VAR, address);
-			  else 
-			  	exit(1);
-	  }
-	| ICONST { gen_code(LD_INT, $1); }			  
-	| exp ADDOP exp { gen_code(ADD, -1); } 		  
-	| exp SUBOP exp 		  
-	| exp MULOP exp 		  
-	| exp DIVOP exp 		  
-	| exp EQUOP exp 		  
-	| exp GT exp 		  	  
-	| exp LT exp 		  	  
-	| LPAREN exp RPAREN
-	;
 
 %%
 

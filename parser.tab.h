@@ -49,28 +49,51 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    INT = 258,
-    IF = 259,
-    ELSE = 260,
-    WHILE = 261,
-    CONTINUE = 262,
-    BREAK = 263,
-    PRINT = 264,
-    ADDOP = 265,
-    SUBOP = 266,
-    MULOP = 267,
-    DIVOP = 268,
-    EQUOP = 269,
-    LT = 270,
-    GT = 271,
-    LPAREN = 272,
-    RPAREN = 273,
-    LBRACE = 274,
-    RBRACE = 275,
-    SEMI = 276,
-    ASSIGN = 277,
-    ID = 278,
-    ICONST = 279
+    CHAR = 258,
+    INT = 259,
+    FLOAT = 260,
+    DOUBLE = 261,
+    IF = 262,
+    ELSE = 263,
+    DO = 264,
+    WHILE = 265,
+    FOR = 266,
+    CONTINUE = 267,
+    BREAK = 268,
+    VOID = 269,
+    RETURN = 270,
+    PRINT = 271,
+    ADDOP = 272,
+    SUBOP = 273,
+    MULOP = 274,
+    DIVOP = 275,
+    INCR = 276,
+    OROP = 277,
+    ANDOP = 278,
+    NOTOP = 279,
+    EQUOP = 280,
+    NEQUOP = 281,
+    LT = 282,
+    GT = 283,
+    GTE = 284,
+    LTE = 285,
+    LPAREN = 286,
+    RPAREN = 287,
+    LBRACK = 288,
+    RBRACK = 289,
+    LBRACE = 290,
+    RBRACE = 291,
+    SEMI = 292,
+    DOT = 293,
+    COMMA = 294,
+    ASSIGN = 295,
+    REFER = 296,
+    APOSTOPH = 297,
+    ID = 298,
+    ICONST = 299,
+    FCONST = 300,
+    CCONST = 301,
+    STRING = 302
   };
 #endif
 
@@ -84,7 +107,7 @@ union YYSTYPE
 	int int_val;
 	list_t* id;
 
-#line 88 "parser.tab.h" /* yacc.c:1921  */
+#line 111 "parser.tab.h" /* yacc.c:1921  */
 };
 
 typedef union YYSTYPE YYSTYPE;

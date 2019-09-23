@@ -27,6 +27,8 @@ ICONST    "0"|[0-9]{digit}*
 "//".*        { printf("Comment at line %d\n", lineno); } 
 
 "int"       { return INT; }
+"float"		{return FLOAT;}
+"char"		{return CHAR;}
 "if"        { return IF; }
 "else"      { return ELSE; }
 "while"     { return WHILE; }
