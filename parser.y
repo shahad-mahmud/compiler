@@ -40,7 +40,7 @@
 %right NOTOP INCR REFER
 
 /*value type of non-terminals*/
-%type <int_val>  declaration
+%type <int_val>  declaration expression
 
 %start program
 
@@ -49,7 +49,11 @@ program: {gen_code(START, -1);} statements {gen_code(HALT, -1);} ;
 
 statements: statements statement | ;
 
-statement:    declarations;
+statement:    	declarations
+				| expression
+				| for_statement
+				| while_statement
+				;
 
 
 declarations: 	  declarations declaration 
@@ -109,7 +113,49 @@ declaration:    INT ID SEMI
 						}
 			  ;
 
+expression:		expression ADDOP expression SEMI{
+					if($1 == $3 && $1!=VOID && $3!=VOID) { 
+						$$ = $1;
+						gen_code(ADD,-1);
+					}else {
+						printf("Type Mismatch\n"); 
+						$$ = VOID; 
+					} 
+				}
+				| ID{
+					list_t *l = search($1 -> st_name);
 
+					if(l == NULL){
+						printf("variable not decleared.\n");
+						$$ = VOID;
+					}else{
+						gen_code( LD_VAR, search( $1 -> st_name) -> address);
+            			$$ = l -> st_type;
+					}
+				}
+				;
+
+while_statement: 	WHILE {
+						gen_code(LABEL,1);
+					} LPAREN expression RPAREN {
+						gen_code(JMP_FALSE,2);
+					} LBRACE statements{
+						gen_code(GOTO,1);
+					}RBRACE {
+						gen_code(LABEL,2);
+					};
+
+for_statement: FOR LPAREN statement {
+								printf("ch\n");
+								gen_code(LABEL, 5);
+							}
+							RPAREN
+							LBRACE statement{
+								gen_code(GOTO, 5);
+							}
+							RBRACE{
+								gen_code(LABEL, 6);
+							};
 
 %%
 

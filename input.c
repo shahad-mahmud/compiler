@@ -8,6 +8,11 @@ int a;
 int gg = 3;
 float dd;
 char c;
-// d=a+b;
+int d;
+a + b;
+
+while(a +b ){
+    a+b;
+}
 // print d;
 

@@ -32,6 +32,7 @@ ICONST    "0"|[0-9]{digit}*
 "if"        { return IF; }
 "else"      { return ELSE; }
 "while"     { return WHILE; }
+"for"		{ return FOR;}
 "continue"  { return CONTINUE; }
 "break"     { return BREAK; }
 

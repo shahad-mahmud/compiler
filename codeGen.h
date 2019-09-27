@@ -1,6 +1,6 @@
-enum code_ops {START,HALT, LD_INT_VALUE, STORE, WRITE_INT, LD_VAR, ADD, LD_INT};
+enum code_ops {START,HALT, LD_INT_VALUE, STORE, WRITE_INT, LD_VAR, ADD, SUB, MUL, DIV, LD_INT, LTN,GTN,LTEN,GTEN, EQN, JMP_FALSE, GOTO, LABEL};
 
-char *op_name[] = {"start", "halt", "ld_int_value", "store", "write_int", "ld_var", "add", "ld_int"};
+char *op_name[] = {"start", "halt", "ld_int_value", "store", "write_int", "ld_var", "add", "sub","mul","div","ld_int","lt","gtn","lten","gten","eqn","jmp_false","goto","label"};
 
 struct instruction
 {
@@ -45,7 +45,7 @@ void print_assembly()
                             printf(".text\n");
                             printf(".globl main\n");
                             printf("main:\n");
-                            printf("addiu $t7, $sp, 160\n");
+                            printf("addiu $t7, $sp, 480\n");
                             break;
 
             case HALT:
@@ -92,6 +92,106 @@ void print_assembly()
                             printf("addiu $sp, $sp, 16\n");
                             printf("\n");
                             break;
+
+            case SUB       :
+                            printf("addiu $sp, $sp, -16\n");
+                            printf("lw $a0, 0($sp)\n");
+                            printf("addiu $sp, $sp, -16\n");
+                            printf("lw $t1, 0($sp)\n");
+                            printf("sub $a0, $t1, $a0\n");
+                            printf("sw $a0, 0($sp)\n");
+                            printf("addiu $sp, $sp, 16\n");
+                            printf("\n");
+                            break;
+
+            case MUL       :
+                            printf("addiu $sp, $sp, -16\n");
+                            printf("lw $a0, 0($sp)\n");
+                            printf("addiu $sp, $sp, -16\n");
+                            printf("lw $t1, 0($sp)\n");
+                            printf("mul $a0, $t1, $a0\n");
+                            printf("sw $a0, 0($sp)\n");
+                            printf("addiu $sp, $sp, 16\n");
+                            printf("\n");
+                            break;
+
+            case DIV       :
+                            printf("addiu $sp, $sp, -16\n");
+                            printf("lw $t0, 0($sp)\n");
+                            printf("addiu $sp, $sp, -16\n");
+                            printf("lw $t1, 0($sp)\n");
+                            printf("div $t1, $t0\n");
+                            printf("mflo $a0\n");
+                            printf("sw $a0, 0($sp)\n");
+                            printf("addiu $sp, $sp, 16\n");
+                            printf("\n");
+                            break;   
+
+            case LTN        :  
+                            printf("addiu $sp, $sp, -16\n");
+                            printf("lw $a0, 0($sp)\n");
+                            printf("addiu $sp, $sp, -16\n");
+                            printf("lw $t1, 0($sp)\n");
+                            printf("slt $a0,$t1,$a0\n");
+                            printf("addiu $sp, $sp, 16\n");
+                            printf("\n");
+                            break;
+
+            case LTEN        :  
+                            printf("addiu $sp, $sp, -16\n");
+                            printf("lw $a0, 0($sp)\n");
+                            printf("addiu $sp, $sp, -16\n");
+                            printf("lw $t1, 0($sp)\n");
+                            printf("sle $a0,$t1,$a0\n");
+                            printf("addiu $sp, $sp, 16\n");
+                            printf("\n");
+                            break;
+             case GTN       :  
+                            printf("addiu $sp, $sp, -16\n");
+                            printf("lw $a0, 0($sp)\n");
+                            printf("addiu $sp, $sp, -16\n");
+                            printf("lw $t1, 0($sp)\n");
+                            printf("sgt $a0,$t1,$a0\n");
+                            printf("addiu $sp, $sp, 16\n");
+                            printf("\n");
+                            break;
+
+            case GTEN        :  
+                            printf("addiu $sp, $sp, -16\n");
+                            printf("lw $a0, 0($sp)\n");
+                            printf("addiu $sp, $sp, -16\n");
+                            printf("lw $t1, 0($sp)\n");
+                            printf("sge $a0,$t1,$a0\n");
+                            printf("addiu $sp, $sp, 16\n");
+                            printf("\n");
+                            break;
+            case EQN        :  
+                            printf("addiu $sp, $sp, -16\n");
+                            printf("lw $a0, 0($sp)\n");
+                            printf("addiu $sp, $sp, -16\n");
+                            printf("lw $t1, 0($sp)\n");
+                            printf("seq $a0,$a0,$t1\n");
+                            printf("addiu $sp, $sp, 16\n");
+                            printf("\n");
+                            break;   
+
+            case JMP_FALSE :
+                            printf("beq $a0, 0 , LABEL%d",code[i].arg);
+                            printf("\n");
+                            break;
+
+            case GOTO      :
+                            printf("j LABEL%d\n",code[i].arg);
+                            printf("\n");
+                            break;
+
+            case LABEL     :
+                            printf("LABEL%d:\n",code[i].arg);
+                            printf("\n");
+                            break;
+
+
+
 
             default:
                             break;

@@ -15,48 +15,6 @@ dd is declared successfully.
 inserting c in symtab and its address = 4
 c is declared successfully.
 
-Comment at line 11
-Comment at line 12
-Parsing finished!
+inserting d in symtab and its address = 5
+d is declared successfully.
 
-
-================STACK MACHINE INSTRUCTIONS================
-  0: start              -1
-  1: store               0
-  2: store               1
-  3: ld_int_value        3
-  4: store               2
-  5: store               3
-  6: store               4
-  7: halt               -1
-
-
-================MIPS assembly================
-
-#start
-.text
-.globl main
-main:
-addiu $t7, $sp, 160
-
-#store
-sw $a0, 0($t7)
-
-#store
-sw $a0, 16($t7)
-
-#ld_int_value
-li $a0, 3
-
-#store
-sw $a0, 32($t7)
-
-#store
-sw $a0, 48($t7)
-
-#store
-sw $a0, 64($t7)
-
-#halt
-li $v0, 10
-syscall
