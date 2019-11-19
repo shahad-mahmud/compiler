@@ -1,0 +1,26 @@
+1. preprosseing - header file in code, remove comments, assign values of macros
+
+gcc -E [input_file] > [output_file.i]
+
+2. preprosseing, compile and generate assembly (compiling)
+
+gcc -S [input_file]
+
+3. machine code 
+
+gcc -C [input_file] -o [output_file.o]
+
+4. linking and executable file 
+
+gcc [input_file]
+
+
+5. GDB debugging
+
+gcc -g [file_name] -o [file_name]
+gdb [file_name]
+
+b < > //add a break point
+run //starts running the code 
+next //execute next program 
+print < > //prints a variable 

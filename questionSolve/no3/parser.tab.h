@@ -49,51 +49,8 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    CHAR = 258,
-    INT = 259,
-    FLOAT = 260,
-    DOUBLE = 261,
-    IF = 262,
-    ELSE = 263,
-    DO = 264,
-    WHILE = 265,
-    FOR = 266,
-    CONTINUE = 267,
-    BREAK = 268,
-    VOID = 269,
-    RETURN = 270,
-    PRINT = 271,
-    ADDOP = 272,
-    SUBOP = 273,
-    MULOP = 274,
-    DIVOP = 275,
-    INCR = 276,
-    OROP = 277,
-    ANDOP = 278,
-    NOTOP = 279,
-    EQUOP = 280,
-    NEQUOP = 281,
-    LT = 282,
-    GT = 283,
-    GTE = 284,
-    LTE = 285,
-    LPAREN = 286,
-    RPAREN = 287,
-    LBRACK = 288,
-    RBRACK = 289,
-    LBRACE = 290,
-    RBRACE = 291,
-    SEMI = 292,
-    DOT = 293,
-    COMMA = 294,
-    ASSIGN = 295,
-    REFER = 296,
-    APOSTOPH = 297,
-    ID = 298,
-    ICONST = 299,
-    FCONST = 300,
-    CCONST = 301,
-    STRING = 302
+    BINARY = 258,
+    ADDOP = 259
   };
 #endif
 
@@ -101,12 +58,11 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 16 "parser.y"
+#line 13 "parser.y"
 
 	int int_val;
-	list_t* id;
 
-#line 110 "parser.tab.h"
+#line 66 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
