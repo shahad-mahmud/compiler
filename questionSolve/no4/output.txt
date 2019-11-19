@@ -1,0 +1,6 @@
+Inserting a in symtab and its address = 0
+Inserting b in symtab and its address = 1
+Inserting c in symtab and its address = 2
+Inserting d in symtab and its address = 3
+Operand Type (INT & DOUBLE) didn't match at line 6
+Parsing Finished
